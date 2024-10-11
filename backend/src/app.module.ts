@@ -4,12 +4,16 @@ import { AppService } from './app.service';
 import { ProductsModule } from './products/products.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [GraphQLModule.forRoot<ApolloDriverConfig>({
     driver: ApolloDriver,
     autoSchemaFile: true,
-  }),ProductsModule],
+  }),ProductsModule,
+  ConfigModule.forRoot({
+    envFilePath: '.env',
+  })],
   controllers: [AppController],
   providers: [AppService],
 })
