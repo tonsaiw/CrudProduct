@@ -10,26 +10,26 @@ export class ItemsResolver {
 
   @Mutation(() => Item)
   createItem(@Args('createItemInput') createItemInput: CreateItemInput) {
-    return this.itemsService.create(createItemInput);
+    return this.itemsService.createItem(createItemInput);
   }
 
-  @Query(() => [Item], { name: 'items' })
-  findAll() {
-    return this.itemsService.findAll();
+  @Query(() => [Item], { name: 'getItems' })
+  getItems() {
+    return this.itemsService.getItems();
   }
 
-  @Query(() => Item, { name: 'item' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.itemsService.findOne(id);
-  }
+  // @Query(() => Item, { name: 'item' })
+  // findOne(@Args('id', { type: () => Int }) id: number) {
+  //   return this.itemsService.findOne(id);
+  // }
 
-  @Mutation(() => Item)
-  updateItem(@Args('updateItemInput') updateItemInput: UpdateItemInput) {
-    return this.itemsService.update(updateItemInput.id, updateItemInput);
-  }
+  // @Mutation(() => Item)
+  // updateItem(@Args('updateItemInput') updateItemInput: UpdateItemInput) {
+  //   return this.itemsService.update(updateItemInput.id, updateItemInput);
+  // }
 
-  @Mutation(() => Item)
-  removeItem(@Args('id', { type: () => Int }) id: number) {
-    return this.itemsService.remove(id);
-  }
+  // @Mutation(() => Item)
+  // removeItem(@Args('id', { type: () => Int }) id: number) {
+  //   return this.itemsService.remove(id);
+  // }
 }

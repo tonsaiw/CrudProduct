@@ -1,26 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { CreateItemInput } from './dto/create-item.input';
 import { UpdateItemInput } from './dto/update-item.input';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { Item } from '@prisma/client';
 
 @Injectable()
 export class ItemsService {
-  create(createItemInput: CreateItemInput) {
-    return 'This action adds a new item';
+
+  constructor(private prisma: PrismaService) {}
+  async createItem(createItemInput: CreateItemInput): Promise<Item> {
+    return await this.prisma.item.create({
+      data: {
+        name: createItemInput.name,
+        desc: createItemInput.desc,
+        item_img: createItemInput.item_img,
+        amount: createItemInput.amount,
+        price: createItemInput.price,
+        cost_price: createItemInput.cost_price,
+        category: { connect: { id: createItemInput.category_id } },
+  }});
   }
 
-  findAll() {
-    return `This action returns all items`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} item`;
-  }
-
-  update(id: number, updateItemInput: UpdateItemInput) {
-    return `This action updates a #${id} item`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} item`;
+  async getItems() {
+    return await this.prisma.item.findMany({ include: { category: true } });
   }
 }
