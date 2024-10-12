@@ -6,30 +6,15 @@ import { UpdateCategoryInput } from './dto/update-category.input';
 
 @Resolver(() => Category)
 export class CategorysResolver {
-  constructor(private readonly categorysService: CategorysService) {}
+  constructor(private readonly categoryService: CategorysService) {}
+
+  @Query(() => [Category])
+  getCategories() {
+    return this.categoryService.getCategories();
+  }
 
   @Mutation(() => Category)
   createCategory(@Args('createCategoryInput') createCategoryInput: CreateCategoryInput) {
-    return this.categorysService.create(createCategoryInput);
-  }
-
-  @Query(() => [Category], { name: 'categorys' })
-  findAll() {
-    return this.categorysService.findAll();
-  }
-
-  @Query(() => Category, { name: 'category' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.categorysService.findOne(id);
-  }
-
-  @Mutation(() => Category)
-  updateCategory(@Args('updateCategoryInput') updateCategoryInput: UpdateCategoryInput) {
-    return this.categorysService.update(updateCategoryInput.id, updateCategoryInput);
-  }
-
-  @Mutation(() => Category)
-  removeCategory(@Args('id', { type: () => Int }) id: number) {
-    return this.categorysService.remove(id);
+    return this.categoryService.createCategory(createCategoryInput);
   }
 }
