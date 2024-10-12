@@ -8,8 +8,8 @@ import { Category_details } from '@prisma/client';
 export class CategoryDetailsService {
   constructor(private prisma: PrismaService) {}
   
-    createCatory_detail(data: CreateCategoryDetailInput): Promise<Category_details> {
-      return this.prisma.category_details.create({
+    async createCatory_detail(data: CreateCategoryDetailInput): Promise<Category_details> {
+      return await this.prisma.category_details.create({
         data: {
           name: data.name,
           desc: data.desc,
@@ -18,8 +18,10 @@ export class CategoryDetailsService {
       });
     }
 
-  findAll() {
-    return `This action returns all categoryDetails`;
+  async findAll() : Promise<Category_details[]> {
+    return await this.prisma.category_details.findMany({
+      include: { category: true },
+    });;
   }
 
   

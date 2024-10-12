@@ -13,8 +13,8 @@ export class CategoryDetailsResolver {
     return this.categoryDetailsService.createCatory_detail(createCategoryDetailInput);
   }
 
-  @Query(() => [CategoryDetail], { name: 'categoryDetails' })
-  findAll() {
+  @Query(() => [CategoryDetail], { name: 'getCategoryDetails' })
+  getCategoryDetail() {
     return this.categoryDetailsService.findAll();
   }
 
