@@ -10,7 +10,7 @@ export class CategoryDetailsResolver {
 
   @Mutation(() => CategoryDetail)
   createCategoryDetail(@Args('createCategoryDetailInput') createCategoryDetailInput: CreateCategoryDetailInput) {
-    return this.categoryDetailsService.create(createCategoryDetailInput);
+    return this.categoryDetailsService.createCatory_detail(createCategoryDetailInput);
   }
 
   @Query(() => [CategoryDetail], { name: 'categoryDetails' })
@@ -18,18 +18,5 @@ export class CategoryDetailsResolver {
     return this.categoryDetailsService.findAll();
   }
 
-  @Query(() => CategoryDetail, { name: 'categoryDetail' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.categoryDetailsService.findOne(id);
-  }
-
-  @Mutation(() => CategoryDetail)
-  updateCategoryDetail(@Args('updateCategoryDetailInput') updateCategoryDetailInput: UpdateCategoryDetailInput) {
-    return this.categoryDetailsService.update(updateCategoryDetailInput.id, updateCategoryDetailInput);
-  }
-
-  @Mutation(() => CategoryDetail)
-  removeCategoryDetail(@Args('id', { type: () => Int }) id: number) {
-    return this.categoryDetailsService.remove(id);
-  }
+  
 }

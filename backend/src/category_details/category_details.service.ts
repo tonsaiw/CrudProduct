@@ -1,26 +1,35 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCategoryDetailInput } from './dto/create-category_detail.input';
 import { UpdateCategoryDetailInput } from './dto/update-category_detail.input';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { Category_details } from '@prisma/client';
 
 @Injectable()
 export class CategoryDetailsService {
-  create(createCategoryDetailInput: CreateCategoryDetailInput) {
-    return 'This action adds a new categoryDetail';
-  }
+  constructor(private prisma: PrismaService) {}
+  
+    createCatory_detail(data: CreateCategoryDetailInput): Promise<Category_details> {
+      return this.prisma.category_details.create({
+        data: {
+          name: data.name,
+          desc: data.desc,
+          categoryId: data.category_id
+        }
+      });
+    }
 
   findAll() {
     return `This action returns all categoryDetails`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} categoryDetail`;
-  }
+  
 
-  update(id: number, updateCategoryDetailInput: UpdateCategoryDetailInput) {
-    return `This action updates a #${id} categoryDetail`;
-  }
+  // async getCategoryDetails(): Promise<Category_details[]> {
+  //   return this.prisma.category_details.findMany();
+  //   // return this.prisma.category_details.findMany({ include: { products: true } });
+  // }
 
-  remove(id: number) {
-    return `This action removes a #${id} categoryDetail`;
-  }
+  // async createCategoryDetail(data: { name: string; desc: string; categoryId: number }): Promise<Category_details> {
+  //   return this.prisma.category_details.create({ data });
+  // }
 }
