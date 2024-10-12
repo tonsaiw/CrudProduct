@@ -15,7 +15,7 @@ datasource db {
 
 model Category {
   id               Int                @id @default(autoincrement())
-  name             String
+  name             String             @unique
   desc             String
   category_details Category_details[]
   Item             Item[]
@@ -23,7 +23,7 @@ model Category {
 
 model Category_details {
   id         Int      @id @default(autoincrement())
-  name       String
+  name       String   @unique
   desc       String
   categoryId Int
   category   Category @relation(fields: [categoryId], references: [id])
@@ -31,7 +31,7 @@ model Category_details {
 
 model Item {
   id         Int      @id @default(autoincrement())
-  name       String
+  name       String   @unique
   desc       String
   item_img   String
   amount     Int
