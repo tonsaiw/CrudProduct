@@ -4,12 +4,6 @@ import axios from "axios";
 function MainLayout() {
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(name, desc);
-  };
-
   const api = axios.create({
     baseURL: "http://localhost:3000/graphql",
   });
@@ -34,6 +28,35 @@ function MainLayout() {
     }
   };
 
+  const createCategory = async (name: string, desc: string) => {
+    try {
+      console.log("call createCategory");
+      const response = await api.post("", {
+        query: `
+                mutation {
+                    createCategory(createCategoryInput: {
+                        name:"${name}",
+                        desc:"${desc}"
+                    }) {
+                        id
+                        name
+                        desc
+                    }
+                }
+
+            `,
+      });
+      console.log("response : ", response);
+    } catch (error) {
+      console.error("error : ", error);
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    createCategory(name, desc);
+  };
+
   getCategory();
 
   return (
@@ -56,8 +79,8 @@ function MainLayout() {
               </label>
               <div className="mt-2">
                 <input
-                  id="about"
-                  name="about"
+                  id="name"
+                  name="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -66,20 +89,19 @@ function MainLayout() {
             </div>
             <div className="col-span-full">
               <label
-                htmlFor="about"
+                htmlFor="desc"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 Description
               </label>
               <div className="mt-2">
                 <textarea
-                  id="about"
-                  name="about"
+                  id="desc"
+                  name="desc"
                   value={desc}
                   onChange={(e) => setDesc(e.target.value)}
                   rows={3}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  defaultValue={""}
                 />
               </div>
             </div>
