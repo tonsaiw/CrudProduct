@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 
 function MainLayout() {
   const [name, setName] = useState("");
@@ -8,8 +9,41 @@ function MainLayout() {
     e.preventDefault();
     console.log(name, desc);
   };
+
+  const api = axios.create({
+    baseURL: "http://localhost:3000/graphql",
+  });
+
+  const getCategory = async () => {
+    try {
+      console.log("call getCategory");
+      const response = await api.post("", {
+        query: `
+            query {
+                getCategories {
+                    id
+                    name
+                    desc
+                }
+            }
+            `,
+      });
+      console.log("response : ", response.data.data.getCategories);
+    } catch (error) {
+      console.error("error : ", error);
+    }
+  };
+
+  getCategory();
+
   return (
     <div>
+      <div>List of items</div>
+      <div>
+        <div>Item 1</div>
+        <div>Item 2</div>
+        <div>Item 3</div>
+      </div>
       <form action="" onSubmit={handleSubmit}>
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
