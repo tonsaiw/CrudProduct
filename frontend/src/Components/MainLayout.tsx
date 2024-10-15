@@ -7,6 +7,10 @@ function MainLayout() {
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
   const [open, setOpen] = useState(false);
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
+    "success"
+  );
+  const [snackbarMessage, setSnackbarMessage] = useState("");
   const api = axios.create({
     baseURL: "http://localhost:3000/graphql",
   });
@@ -25,7 +29,7 @@ function MainLayout() {
             }
             `,
       });
-      console.log("response : ", response.data.data.getCategories);
+      console.log("response : ", response);
     } catch (error) {
       console.error("error : ", error);
     }
@@ -49,9 +53,18 @@ function MainLayout() {
 
             `,
       });
-      console.log("response : ", response);
+      console.log("responseCreated : ", response);
+      if (response.data.data !== null) {
+        setSnackbarSeverity("success");
+        setSnackbarMessage("Create Category Success");
+      } else {
+        setSnackbarSeverity("error");
+        setSnackbarMessage("Failed to Create Category");
+      }
     } catch (error) {
       console.error("error : ", error);
+      setSnackbarSeverity("error");
+      setSnackbarMessage("Failed to Create Category");
     }
   };
 
@@ -121,11 +134,11 @@ function MainLayout() {
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
               <Alert
                 onClose={handleClose}
-                severity="success"
+                severity={snackbarSeverity}
                 variant="filled"
                 sx={{ width: "100%" }}
               >
-                Create Category Success
+                {snackbarMessage}
               </Alert>
             </Snackbar>
           </div>
