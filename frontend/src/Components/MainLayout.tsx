@@ -1,9 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
+import Snackbar, { SnackbarCloseReason } from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 function MainLayout() {
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
+  const [open, setOpen] = useState(false);
   const api = axios.create({
     baseURL: "http://localhost:3000/graphql",
   });
@@ -55,6 +58,20 @@ function MainLayout() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     createCategory(name, desc);
+    setName("");
+    setDesc("");
+    setOpen(true);
+  };
+
+  const handleClose = (
+    _: React.SyntheticEvent | Event,
+    reason?: SnackbarCloseReason
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
   };
 
   getCategory();
@@ -62,11 +79,6 @@ function MainLayout() {
   return (
     <div>
       <div>List of items</div>
-      <div>
-        <div>Item 1</div>
-        <div>Item 2</div>
-        <div>Item 3</div>
-      </div>
       <form action="" onSubmit={handleSubmit}>
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
@@ -106,6 +118,16 @@ function MainLayout() {
               </div>
             </div>
             <button type="submit">Submit</button>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+              <Alert
+                onClose={handleClose}
+                severity="success"
+                variant="filled"
+                sx={{ width: "100%" }}
+              >
+                Create Category Success
+              </Alert>
+            </Snackbar>
           </div>
         </div>
       </form>
