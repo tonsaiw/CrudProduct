@@ -1,12 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import Snackbar, { SnackbarCloseReason } from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+
+interface Category {
+  id: number;
+  name: string;
+  desc: string;
+}
 
 function MainLayout() {
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
   const [open, setOpen] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
+
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
     "success"
   );
@@ -14,6 +22,12 @@ function MainLayout() {
   const api = axios.create({
     baseURL: "http://localhost:3000/graphql",
   });
+
+  useEffect(() => {
+    if (categories.length === 0) {
+      getCategory();
+    }
+  }, []);
 
   const getCategory = async () => {
     try {
@@ -30,6 +44,7 @@ function MainLayout() {
             `,
       });
       console.log("response : ", response);
+      setCategories(response.data.data.getCategories);
     } catch (error) {
       console.error("error : ", error);
     }
@@ -74,6 +89,7 @@ function MainLayout() {
     setName("");
     setDesc("");
     setOpen(true);
+    getCategory();
   };
 
   const handleClose = (
@@ -87,11 +103,15 @@ function MainLayout() {
     setOpen(false);
   };
 
-  getCategory();
-
   return (
     <div>
       <div>List of items</div>
+      {categories.map((category) => (
+        <div key={category.id}>
+          <div>Name : {category.name}</div>
+          <div>Desc : {category.desc}</div>
+        </div>
+      ))}
       <form action="" onSubmit={handleSubmit}>
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
