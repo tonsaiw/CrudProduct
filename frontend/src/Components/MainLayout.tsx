@@ -25,11 +25,11 @@ function MainLayout() {
 
   useEffect(() => {
     if (categories.length === 0) {
-      getCategory();
+      getCategories();
     }
-  }, []);
+  }, [categories]);
 
-  const getCategory = async () => {
+  const getCategories = async () => {
     try {
       console.log("call getCategory");
       const response = await api.post("", {
@@ -43,7 +43,7 @@ function MainLayout() {
             }
             `,
       });
-      console.log("response : ", response);
+      console.log("responseCreate : ", response);
       setCategories(response.data.data.getCategories);
     } catch (error) {
       console.error("error : ", error);
@@ -83,13 +83,44 @@ function MainLayout() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const deleteCategory = async (id: number) => {
+    try {
+      console.log("call deleteCategory");
+      const response = await api.post("", {
+        query: `
+                  mutation {
+                      deleteCategory(id:${id}) {
+                          id
+                          name
+                          desc
+                      }
+                  }
+  
+              `,
+      });
+      console.log("responseDeleted : ", response);
+      if (response.data.data !== null) {
+        setSnackbarSeverity("success");
+        setSnackbarMessage("Delete Category Success");
+        getCategories();
+      } else {
+        setSnackbarSeverity("error");
+        setSnackbarMessage("Failed to Delete Category");
+      }
+    } catch (error) {
+      console.error("error : ", error);
+      setSnackbarSeverity("error");
+      setSnackbarMessage("Failed to Delete Category");
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createCategory(name, desc);
+    await createCategory(name, desc);
     setName("");
     setDesc("");
     setOpen(true);
-    getCategory();
+    await getCategories();
   };
 
   const handleClose = (
@@ -103,13 +134,21 @@ function MainLayout() {
     setOpen(false);
   };
 
+  const handleDeleteCategory = async (id: number) => {
+    deleteCategory(id);
+    setOpen(true);
+  };
+
   return (
     <div>
       <div>List of items</div>
       {categories.map((category) => (
-        <div key={category.id}>
+        <div key={category.id} className="bg-red-500 p-20 m-20">
           <div>Name : {category.name}</div>
           <div>Desc : {category.desc}</div>
+          <button onClick={() => handleDeleteCategory(category.id)}>
+            Delete
+          </button>
         </div>
       ))}
       <form action="" onSubmit={handleSubmit}>
