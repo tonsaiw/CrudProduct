@@ -14,7 +14,12 @@ export class CategorysResolver {
   }
 
   @Mutation(() => Category)
-  createCategory(@Args('createCategoryInput') createCategoryInput: CreateCategoryInput) {
+  async createCategory(@Args('createCategoryInput') createCategoryInput: CreateCategoryInput) {
     return this.categoryService.createCategory(createCategoryInput);
+  }
+
+  @Mutation(() => Category)
+  async deleteCategory(@Args('id', { type: () => Int}) id: number) {
+    return this.categoryService.deleteCategory(id);
   }
 }
