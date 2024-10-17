@@ -13,6 +13,11 @@ export class CategorysResolver {
     return this.categoryService.getCategories();
   }
 
+  @Query(() => Category)
+  getCategory(@Args('id', { type: () => Int }) id: number) {
+    return this.categoryService.getCategory(id);
+  }
+
   @Mutation(() => Category)
   async createCategory(@Args('createCategoryInput') createCategoryInput: CreateCategoryInput) {
     return this.categoryService.createCategory(createCategoryInput);

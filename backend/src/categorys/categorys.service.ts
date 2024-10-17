@@ -12,6 +12,12 @@ export class CategorysService {
     return this.prisma.category.findMany({ include: { category_details: true } });
   }
 
+  async getCategory(id: number): Promise<Category> {
+    return this.prisma.category.findUnique({
+      where: { id },
+    });
+  }
+
   async createCategory(data: CreateCategoryInput): Promise<Category> {
     const existingCategory = await this.prisma.category.findUnique({
       where: { name: data.name },
