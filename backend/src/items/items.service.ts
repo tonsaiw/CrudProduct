@@ -24,4 +24,30 @@ export class ItemsService {
   async getItems() {
     return await this.prisma.item.findMany({ include: { category: true } });
   }
+
+  async findOne(id: number): Promise<Item> {
+    return this.prisma.item.findUnique({
+      where: { id },
+    });
+  }
+
+  async update(id: number, updateItemInput: UpdateItemInput): Promise<Item> {
+    return this.prisma.item.update({
+      where: { id },
+      data: {
+        name: updateItemInput.name,
+        desc: updateItemInput.desc,
+        item_img: updateItemInput.item_img,
+        amount: updateItemInput.amount,
+        price: updateItemInput.price,
+        cost_price: updateItemInput.cost_price
+      },
+    });
+  }
+
+  async delete(id: number): Promise<Item> {
+    return this.prisma.item.delete({
+      where: { id },
+    });
+  }
 }

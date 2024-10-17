@@ -18,18 +18,18 @@ export class ItemsResolver {
     return this.itemsService.getItems();
   }
 
-  // @Query(() => Item, { name: 'item' })
-  // findOne(@Args('id', { type: () => Int }) id: number) {
-  //   return this.itemsService.findOne(id);
-  // }
+  @Query(() => Item, { name: 'item' })
+  findOne(@Args('id', { type: () => Int }) id: number) {
+    return this.itemsService.findOne(id);
+  }
 
-  // @Mutation(() => Item)
-  // updateItem(@Args('updateItemInput') updateItemInput: UpdateItemInput) {
-  //   return this.itemsService.update(updateItemInput.id, updateItemInput);
-  // }
+  @Mutation(() => Item)
+  updateItem(@Args('updateItemInput') updateItemInput: UpdateItemInput) {
+    return this.itemsService.update(updateItemInput.id, updateItemInput);
+  }
 
-  // @Mutation(() => Item)
-  // removeItem(@Args('id', { type: () => Int }) id: number) {
-  //   return this.itemsService.remove(id);
-  // }
+  @Mutation(() => Item)
+  deleteItem(@Args('id', { type: () => Int }) id: number) {
+    return this.itemsService.delete(id);
+  }
 }
