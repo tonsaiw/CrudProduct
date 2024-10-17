@@ -24,14 +24,26 @@ export class CategoryDetailsService {
     });;
   }
 
-  
+  async findOne(id: number): Promise<Category_details> {
+    return this.prisma.category_details.findUnique({
+      where: { id },
+    })
+  }
 
-  // async getCategoryDetails(): Promise<Category_details[]> {
-  //   return this.prisma.category_details.findMany();
-  //   // return this.prisma.category_details.findMany({ include: { products: true } });
-  // }
+  async updateCategoryDetail(data: UpdateCategoryDetailInput): Promise<Category_details> {
+    return this.prisma.category_details.update({
+      where: { id: data.id },
+      data: {
+        name: data.name,
+        desc: data.desc,
+      },
+    });
+  }
 
-  // async createCategoryDetail(data: { name: string; desc: string; categoryId: number }): Promise<Category_details> {
-  //   return this.prisma.category_details.create({ data });
-  // }
+  async deleteCategoryDetail(id: number): Promise<Category_details> {
+    return this.prisma.category_details.delete({
+      where: { id },
+    });
+  }
+
 }

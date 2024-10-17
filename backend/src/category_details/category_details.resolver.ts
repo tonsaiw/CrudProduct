@@ -14,9 +14,23 @@ export class CategoryDetailsResolver {
   }
 
   @Query(() => [CategoryDetail], { name: 'getCategoryDetails' })
-  getCategoryDetail() {
+  getCategoryDetails() {
     return this.categoryDetailsService.findAll();
   }
 
+  @Query(() => CategoryDetail, { name: 'getCategoryDetail' })
+  getCategoryDetail(@Args('id', { type: () => Int }) id: number) {
+    return this.categoryDetailsService.findOne(id);
+  }
+  
+  @Mutation(() => CategoryDetail)
+  updateCategoryDetail(@Args('updateCategoryDetailInput') updateCategoryDetailInput: UpdateCategoryDetailInput) {
+    return this.categoryDetailsService.updateCategoryDetail(updateCategoryDetailInput);
+  }
+
+  @Mutation(() => CategoryDetail)
+  deleteCategoryDetail(@Args('id', { type: () => Int }) id: number) {
+    return this.categoryDetailsService.deleteCategoryDetail(id);
+  }
   
 }
