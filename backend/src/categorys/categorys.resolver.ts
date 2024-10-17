@@ -20,6 +20,12 @@ export class CategorysResolver {
 
   @Mutation(() => Category)
   async deleteCategory(@Args('id', { type: () => Int}) id: number) {
+    console.log("delete Resolver", id);
     return this.categoryService.deleteCategory(id);
+  }
+
+  @Mutation(() => Category)
+  async updateCategory(@Args('updateCategoryInput') updateCategoryInput: UpdateCategoryInput) {
+    return this.categoryService.updateCategory(updateCategoryInput);
   }
 }

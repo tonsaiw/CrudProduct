@@ -30,8 +30,27 @@ export class CategorysService {
   }
 
   async deleteCategory(id: number): Promise<Category> {
+    console.log("deleteService", id);
     return this.prisma.category.delete({
       where: { id },
+    });
+  }
+
+  async updateCategory(data: UpdateCategoryInput): Promise<Category> {
+    const existingCategory = await this.prisma.category.findUnique({
+      where: { name: data.name },
+    });
+
+    if (existingCategory) {
+      throw new Error('Category already have this name');
+    }
+    
+    return this.prisma.category.update({
+      where: { id: data.id },
+      data: {
+        name: data.name,
+        desc: data.desc,
+      },
     });
   }
 }
